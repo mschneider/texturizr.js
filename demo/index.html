@@ -21,13 +21,22 @@
         var url = canvas.toDataURL("image/png");
         $(element).css("background", "url("+url+")");
       };
+      var log = function(string) {
+        var now = new Date();
+        var timestamp = "[" + now.getMinutes() + ":" + now.getSeconds() + "." + now.getMilliseconds() + "]"
+        console.log(timestamp, string)
+      };
       $(document).ready(function() {
+        log("ready")
         applyTextureOverBackground("stripes", 40, new StripeTexture("black", 20, 7));
+        log("rendered stripes");
         applyTextureOverBackground("grain", 100, new GrainTexture(0.15));
+        log("rendered grain");
         applyTextures("grain_and_stripes", 40, [
             new ColorTexture("rgb(255,132,124)"),
             new GrainTexture(0.08),
             new StripeTexture("black", 10, 1) ]);
+        log("rendered complex example");
       });
     </script>
   </head>
