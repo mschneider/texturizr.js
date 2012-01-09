@@ -1,0 +1,40 @@
+#stripes { background-color: #97B89B; }
+#grain { background-color: #FECEA8; }
+
+* {
+  font-family: sans-serif;
+}
+
+header > hgroup {
+  text-align: center;
+  background-color: #ECECEC;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
+  padding: 5px 7px;
+  text-shadow: rgba(255,255,255,0.5) -1px -1px 0 !important;
+}
+
+header > hgroup > h1, h2 {
+  display: inline;
+  margin-left: 10px;
+  font-size: 42px;
+}
+
+article {
+  margin: 50px auto;
+  min-height: 3cm;
+  width: 500px;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
+}
+
+article > header {
+  display: block;
+}
+
+article > header > h1 {
+  background-color: #ECECEC;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
+  display: inline;
+  margin: -7px -5px;
+  padding: 5px 7px;
+  text-shadow: rgba(255,255,255,0.5) -1px -1px 0 !important;
+}

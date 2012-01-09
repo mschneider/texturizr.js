@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../texturizr.js"></script>
+    <script type="text/javascript">
+    var applyTexture = function(id, textureClass, size) {
+      var element = document.getElementById(id);
+      var bg = $(element).css("background-color");
+      var texture = new textureClass(bg, size);
+      texture.applyTo(element)
+    };
+    $(document).ready(function() {
+      applyTexture("stripes", StripedTexture, 10);
+      applyTexture("grain", GrainTexture, 100);
+    });
+    </script>
+  </head>
+  <body>
+    <header>
+      <hgroup>
+        <h1>texturizr.js</h1>
+        <h2>demo</h2>
+      <hgroup>
+    </header>
+    <article id="stripes">
+      <header>
+        <h1>Striped Texture</h1>
+      </header>
+    </article>
+    <article id="grain">
+      <header>
+        <h1>Grain Texture</h1>
+      </header>
+    </article>
+  </body>
+</html>
