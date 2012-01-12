@@ -56,33 +56,52 @@ StripeTexture = (function() {
 
   __extends(StripeTexture, Texture);
 
-  function StripeTexture(strokeStyle, offset, lineWidth) {
-    this.strokeStyle = strokeStyle;
-    this.offset = offset;
-    this.lineWidth = lineWidth;
+  /* StripeTexture(options)
+  # mandatory options
+  #  color: color of the stripes
+  #  spacing: horizontal distance between the stripes
+  # optional parameters (default)
+  #  offsetX(0): offset in x direction
+  #  offsetY(0): offset in y direction
+  #  rotation(pi/4): rotation in radian relative to the x-axis clockwise
+  #  width(1): width of a stripe
+  */
+
+  function StripeTexture(options) {
+    this.color = options.color;
+    this.spacing = options.spacing;
+    this.width = options.width || 1;
+    this.rotation = options.rotation || (Math.PI / 4);
+    this.ascent = Math.tan(this.rotation);
+    this.offsetX = options.offsetX || 0;
+    this.offsetY = options.offsetY || 0;
   }
 
   StripeTexture.prototype.render = function(canvas) {
     var x, y;
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
-    x = y = this.offset / 2;
-    while (x < this.canvas.width) {
+    this.ctx.beginPath();
+    x = y = 0;
+    while (x <= this.canvas.width) {
       this.drawStripe(x, 0);
-      x += this.offset;
+      x += this.spacing;
     }
-    while (y < this.canvas.height) {
-      this.drawStripe(0, y);
-      y += this.offset;
+    while (y <= this.canvas.height) {
+      if (y !== 0) this.drawStripe(0, y);
+      y += this.spacing * Math.abs(this.ascent);
     }
-    this.ctx.strokeStyle = this.strokeStyle;
-    this.ctx.lineWidth = this.lineWidth;
+    this.ctx.closePath();
+    this.ctx.strokeStyle = this.color;
+    this.ctx.lineWidth = this.width;
     return this.ctx.stroke();
   };
 
   StripeTexture.prototype.drawStripe = function(x, y) {
-    this.ctx.moveTo(x - this.canvas.width, y - this.canvas.height);
-    return this.ctx.lineTo(x + this.canvas.width, y + this.canvas.height);
+    x += this.offsetX;
+    y += this.offsetY;
+    this.ctx.moveTo(x - this.canvas.width, y - (this.ascent * this.canvas.height));
+    return this.ctx.lineTo(x + this.canvas.width, y + (this.ascent * this.canvas.height));
   };
 
   return StripeTexture;

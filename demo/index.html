@@ -14,12 +14,25 @@
       };
       $(document).ready(function() {
         log("ready")
-        Texturizr.applyOverBackgroundColor("#stripes", new StripeTexture("black", 20, 7));
+        Texturizr.applyOverBackgroundColor("#stripes", new StripeTexture({
+            color: "black", spacing: 20, width: 7 }));
         log("rendered stripes");
         Texturizr.applyOverBackgroundColor("#grain", new GrainTexture(0.13));
         log("rendered grain");
-        Texturizr.apply("#grain_and_stripes", [new ColorTexture("rgb(255,132,124)"), new GrainTexture(0.08), new StripeTexture("black", 10, 1) ]);
-        log("rendered complex example");
+        Texturizr.apply("#grain_and_stripes", [
+            new ColorTexture("rgb(255,132,124)"),
+            new GrainTexture(0.08),
+            new StripeTexture({color: "black", spacing: 10})
+          ]);
+        log("rendered first complex example");
+        Texturizr.apply("#multiple_stripes", [
+            new ColorTexture("#FFECBD"),
+            new StripeTexture({color: "#9CD4A9", offsetX: 330, rotation: Math.PI/-4, spacing: 600, width: 50 }),
+            new StripeTexture({color: "#F61148", offsetX: 470, rotation: Math.PI/-4, spacing: 600, width: 50 }),
+            new StripeTexture({color: "#FA5E53", offsetX: 400, rotation: Math.PI/-4, spacing: 600, width: 50 }),
+            new StripeTexture({color: "rgba(99, 99, 99, 0.4)", offsetY: 85, rotation: Math.PI/50, spacing: 300, width: 20})
+          ], 500);
+        log("rendered second complex example");
       });
     </script>
   </head>
@@ -43,6 +56,11 @@
     <article id="grain_and_stripes">
       <header>
         <h1>Grained and Striped Texture</h1>
+      </header>
+      </article>
+    <article id="multiple_stripes">
+      <header>
+        <h1>Multiple Stripes</h1>
       </header>
     </article>
   </body>

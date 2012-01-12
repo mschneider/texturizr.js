@@ -25,24 +25,46 @@ class ColorTexture extends Texture
     ctx.fillRect 0, 0, @canvas.width, @canvas.height
 
 class StripeTexture extends Texture
-  constructor: (@strokeStyle, @offset, @lineWidth) ->
+
+  ### StripeTexture(options)
+  # mandatory options
+  #  color: color of the stripes
+  #  spacing: horizontal distance between the stripes
+  # optional parameters (default)
+  #  offsetX(0): offset in x direction
+  #  offsetY(0): offset in y direction
+  #  rotation(pi/4): rotation in radian relative to the x-axis clockwise
+  #  width(1): width of a stripe
+  ###
+  constructor: (options) ->
+    @color = options.color
+    @spacing = options.spacing
+    @width = options.width || 1
+    @rotation = options.rotation || ( Math.PI / 4 )
+    @ascent = Math.tan @rotation
+    @offsetX = options.offsetX || 0
+    @offsetY = options.offsetY || 0
 
   render: (@canvas) ->
     @ctx = @canvas.getContext "2d"
-    x = y = @offset/2
-    while x < @canvas.width
+    @ctx.beginPath()
+    x = y = 0
+    while x <= @canvas.width
       this.drawStripe(x, 0)
-      x += @offset
-    while y < @canvas.height
-      this.drawStripe(0, y)
-      y += @offset
-    @ctx.strokeStyle = @strokeStyle
-    @ctx.lineWidth = @lineWidth
+      x += @spacing
+    while y <= @canvas.height
+      this.drawStripe(0, y) unless y == 0
+      y += @spacing * Math.abs @ascent
+    @ctx.closePath()
+    @ctx.strokeStyle = @color
+    @ctx.lineWidth = @width
     @ctx.stroke()
 
   drawStripe: (x, y) ->
-    @ctx.moveTo x - @canvas.width, y - @canvas.height
-    @ctx.lineTo x + @canvas.width, y + @canvas.height
+    x += @offsetX
+    y += @offsetY
+    @ctx.moveTo x - @canvas.width, y - (@ascent * @canvas.height)
+    @ctx.lineTo x + @canvas.width, y + (@ascent * @canvas.height)
 
 class GrainTexture extends Texture
   constructor: (@amount) ->
