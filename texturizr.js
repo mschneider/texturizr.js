@@ -1,5 +1,28 @@
-var ColorTexture, GrainTexture, StripeTexture, Texture;
+var ColorTexture, GrainTexture, StripeTexture, Texture, Texturizr;
 var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+Texturizr = {
+  apply: function(selector, textures, size) {
+    var canvas, texture, url, _i, _len;
+    if (size == null) size = 100;
+    canvas = document.createElement("canvas");
+    canvas.width = canvas.height = size;
+    for (_i = 0, _len = textures.length; _i < _len; _i++) {
+      texture = textures[_i];
+      texture.render(canvas);
+    }
+    url = canvas.toDataURL("image/png");
+    return $(selector).css("background", "url(" + url + ")");
+  },
+  applyOverBackgroundColor: function(selector, texture, size) {
+    var backgroundColor, backgroundTexture, textures;
+    if (size == null) size = 100;
+    backgroundColor = $(selector).css("background-color");
+    backgroundTexture = new ColorTexture(backgroundColor);
+    textures = [backgroundTexture, texture];
+    return this.apply(selector, textures, size);
+  }
+};
 
 Texture = (function() {
 

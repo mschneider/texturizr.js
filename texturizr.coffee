@@ -1,8 +1,24 @@
+Texturizr = {
+  apply: (selector, textures, size = 100) ->
+    canvas = document.createElement "canvas"
+    canvas.width = canvas.height = size
+    for texture in textures
+      texture.render canvas
+    url = canvas.toDataURL "image/png"
+    $(selector).css "background", "url(" + url + ")"
+
+  applyOverBackgroundColor: (selector, texture, size = 100) ->
+    backgroundColor = $(selector).css "background-color"
+    backgroundTexture = new ColorTexture backgroundColor
+    textures = [backgroundTexture, texture]
+    this.apply selector, textures, size
+}
+
 class Texture
 
 class ColorTexture extends Texture
   constructor: (@fillStyle) ->
-  
+
   render: (@canvas) ->
     ctx = @canvas.getContext "2d"
     ctx.fillStyle = @fillStyle
@@ -25,8 +41,8 @@ class StripeTexture extends Texture
     @ctx.stroke()
 
   drawStripe: (x, y) ->
-    @ctx.moveTo x-@canvas.width, y-@canvas.height
-    @ctx.lineTo x+@canvas.width, y+@canvas.height
+    @ctx.moveTo x - @canvas.width, y - @canvas.height
+    @ctx.lineTo x + @canvas.width, y + @canvas.height
 
 class GrainTexture extends Texture
   constructor: (@amount) ->
@@ -36,5 +52,6 @@ class GrainTexture extends Texture
     for x in [0..@canvas.width]
       for y in [0..@canvas.height]
          opacity = Math.random() * @amount
-         ctx.fillStyle = "rgba(0, 0, 0, " + opacity + ")";
-         ctx.fillRect(x, y, 1, 1);
+         ctx.fillStyle = "rgba(0, 0, 0, " + opacity + ")"
+         ctx.fillRect x, y, 1, 1
+

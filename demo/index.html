@@ -6,21 +6,6 @@
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="../texturizr.js"></script>
     <script type="text/javascript">
-      var applyTextureOverBackground = function(id, size, texture) {
-        var element = document.getElementById(id);
-        var backgroundStyle = $(element).css("background-color");
-        var backgroundTexture = new ColorTexture(backgroundStyle);
-        applyTextures(id, size, [backgroundTexture, texture]);
-      };
-      var applyTextures = function(id, size, textures) {
-        var element = document.getElementById(id);
-        var canvas = document.createElement("canvas");
-        canvas.width = canvas.height = size;
-        for (i in textures) {
-          textures[i].render(canvas); }
-        var url = canvas.toDataURL("image/png");
-        $(element).css("background", "url("+url+")");
-      };
       var log = function(string) {
         var now = new Date();
         var timestamp = "[" + now.getMinutes() + ":" + now.getSeconds() + "." + now.getMilliseconds() + "]"
@@ -28,14 +13,11 @@
       };
       $(document).ready(function() {
         log("ready")
-        applyTextureOverBackground("stripes", 40, new StripeTexture("black", 20, 7));
+        Texturizr.applyOverBackgroundColor("#stripes", new StripeTexture("black", 20, 7));
         log("rendered stripes");
-        applyTextureOverBackground("grain", 100, new GrainTexture(0.15));
+        Texturizr.applyOverBackgroundColor("#grain", new GrainTexture(0.13));
         log("rendered grain");
-        applyTextures("grain_and_stripes", 40, [
-            new ColorTexture("rgb(255,132,124)"),
-            new GrainTexture(0.08),
-            new StripeTexture("black", 10, 1) ]);
+        Texturizr.apply("#grain_and_stripes", [new ColorTexture("rgb(255,132,124)"), new GrainTexture(0.08), new StripeTexture("black", 10, 1) ]);
         log("rendered complex example");
       });
     </script>
