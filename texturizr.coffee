@@ -25,7 +25,6 @@ class ColorTexture extends Texture
     ctx.fillRect 0, 0, @canvas.width, @canvas.height
 
 class StripeTexture extends Texture
-
   ### StripeTexture(options)
   # mandatory options
   #  color: color of the stripes
@@ -54,7 +53,7 @@ class StripeTexture extends Texture
       x += @spacing
     while y <= @canvas.height
       this.drawStripe(0, y) unless y == 0
-      y += @spacing * Math.abs @ascent
+      y = Math.round(y + (@spacing * Math.abs @ascent))
     @ctx.closePath()
     @ctx.strokeStyle = @color
     @ctx.lineWidth = @width
@@ -66,14 +65,25 @@ class StripeTexture extends Texture
     @ctx.moveTo x - @canvas.width, y - (@ascent * @canvas.height)
     @ctx.lineTo x + @canvas.width, y + (@ascent * @canvas.height)
 
-class GrainTexture extends Texture
-  constructor: (@amount) ->
+class NoiseTexture extends Texture
+  ### NoiseTexture(options)
+  # mandatory options
+  #  amount: the maximum alpha of the noise texture
+  # optional parameters (default)
+  #  r(0), g(0), b(0): color of the noise
+  ###
+  constructor: (options) ->
+    @amount = options.amount
+    @r = options.r || 0
+    @g = options.g || 0
+    @b = options.b || 0
 
   render: (@canvas) ->
     ctx = @canvas.getContext "2d"
     for x in [0..@canvas.width]
       for y in [0..@canvas.height]
-         opacity = Math.random() * @amount
-         ctx.fillStyle = "rgba(0, 0, 0, " + opacity + ")"
+         alpha = Math.random() * @amount
+         rgba = [@r, @g, @b, alpha]
+         ctx.fillStyle = "rgba(" + rgba.join() + ")"
          ctx.fillRect x, y, 1, 1
 
